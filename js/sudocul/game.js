@@ -123,7 +123,13 @@ let inputBound = false;
 function bindOnce() {
   if (inputBound) return;
   inputBound = true;
-  initInput(els.tray, els.grid, () => state.grid, onPlace);
+  initInput(
+    els.tray,
+    els.grid,
+    () => state.grid,
+    onPlace,
+    () => state.busy,
+  );
   els.restart.addEventListener('click', init);
 }
 

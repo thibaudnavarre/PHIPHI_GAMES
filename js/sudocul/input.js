@@ -22,7 +22,7 @@ let drag = null;
  * @param {() => number[][]} getGrid - Returns the live grid state.
  * @param {Function} onPlace     - Called with (piece, row, col) on valid drop.
  */
-export function initInput(trayEl, gridEl, getGrid, onPlace) {
+export function initInput(trayEl, gridEl, getGrid, onPlace, isBusy) {
   trayEl.addEventListener('mousedown', onStart);
   trayEl.addEventListener('touchstart', onStart, { passive: false });
   document.addEventListener('mousemove', onMove);
@@ -39,6 +39,8 @@ export function initInput(trayEl, gridEl, getGrid, onPlace) {
   function onStart(e) {
     const pieceEl = e.target.closest('.piece-preview');
     if (!pieceEl) return;
+    // Don't start a drag while the game is animating a placement.
+    if (isBusy && isBusy()) return;
     e.preventDefault();
 
     const isTouch = !!e.touches;
@@ -83,6 +85,12 @@ export function initInput(trayEl, gridEl, getGrid, onPlace) {
 
   function onMove(e) {
     if (!drag) return;
+    // Mouse button released outside the browser window: no mouseup fires on
+    // the document, so we detect the stale drag here and cancel it cleanly.
+    if (!drag.isTouch && e.buttons === 0) {
+      onEnd();
+      return;
+    }
     e.preventDefault();
     const { x, y } = pointer(e);
     updateDrag(x, y);
