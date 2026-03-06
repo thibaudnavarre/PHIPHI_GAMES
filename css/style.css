@@ -70,6 +70,32 @@ body {
   line-height: 1.1;
 }
 
+#update-btn {
+  margin-top: -20px;
+  padding: 10px 28px;
+  background: var(--accent, #e8441a);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition:
+    transform 0.12s,
+    opacity 0.12s;
+}
+
+#update-btn:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+
+#update-btn.hidden {
+  display: none;
+}
+
 #game-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
