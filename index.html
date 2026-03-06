@@ -4,16 +4,18 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=no"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
     />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>SudoCul</title>
+    <title>PHIPHI GAMES</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/sudocul.css" />
+    <link rel="stylesheet" href="css/freecul.css" />
   </head>
   <body>
     <!-- ── MENU ─────────────────────────────────────────────────── -->
@@ -35,6 +37,38 @@
             </g>
           </svg>
           <span class="tile-name">SudoCul</span>
+        </button>
+        <button class="game-tile" id="tile-freecul">
+          <svg
+            class="tile-icon"
+            viewBox="0 0 80 80"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect width="80" height="80" rx="12" fill="#1c1c2e" />
+            <rect x="10" y="16" width="22" height="30" rx="4" fill="#f0f0f0" />
+            <text
+              x="21"
+              y="36"
+              text-anchor="middle"
+              font-size="14"
+              font-weight="bold"
+              fill="#cc2222"
+            >
+              ♥
+            </text>
+            <rect x="48" y="34" width="22" height="30" rx="4" fill="#f0f0f0" />
+            <text
+              x="59"
+              y="54"
+              text-anchor="middle"
+              font-size="14"
+              font-weight="bold"
+              fill="#1a1a8a"
+            >
+              ♠
+            </text>
+          </svg>
+          <span class="tile-name">FreeCul</span>
         </button>
         <div class="game-tile coming-soon">
           <svg
@@ -77,18 +111,18 @@
       </div>
     </div>
 
-    <!-- ── GAME ──────────────────────────────────────────────────── -->
-    <div id="app" class="hidden">
-      <button id="menu-btn" aria-label="Back to menu">&#8592;</button>
-      <header id="header">
+    <!-- ── SUDOCUL ─────────────────────────────────────────────── -->
+    <div id="app-sudocul" class="hidden">
+      <button id="menu-btn-sudocul" aria-label="Back to menu">&#8592;</button>
+      <header id="header-sudocul">
         <div class="score-box">
           <span class="score-label">SCORE</span>
-          <span id="score">0</span>
+          <span id="score-sudocul">0</span>
         </div>
         <h1 class="title">SudoCul</h1>
         <div class="score-box">
           <span class="score-label">BEST</span>
-          <span id="best-score">0</span>
+          <span id="best-sudocul">0</span>
         </div>
       </header>
 
@@ -102,19 +136,46 @@
       </div>
     </div>
 
-    <div id="game-over-overlay" class="hidden">
+    <div id="game-over-sudocul" class="hidden">
       <div class="modal">
         <h2>Game Over</h2>
         <p class="final-label">SCORE</p>
-        <p id="final-score" class="final-value">0</p>
-        <button id="restart-btn">Play Again</button>
-        <button id="goto-menu-btn">Menu</button>
+        <p id="final-score-sudocul" class="final-value">0</p>
+        <button id="restart-sudocul">Play Again</button>
+        <button id="goto-menu-sudocul">Menu</button>
       </div>
     </div>
 
-    <div id="score-popup" class="hidden">+0</div>
+    <div id="score-popup-sudocul" class="hidden">+0</div>
 
-    <script type="module" src="js/game.js"></script>
+    <!-- ── FREECUL ──────────────────────────────────────────────── -->
+    <div id="app-freecul" class="hidden">
+      <button id="menu-btn-freecul" aria-label="Back to menu">&#8592;</button>
+      <header id="header-freecul">
+        <div class="score-box fc-score-box">
+          <span class="score-label">MOVES</span>
+          <span id="moves-freecul">0</span>
+        </div>
+        <h1 class="fc-title">FreeCul</h1>
+        <div class="score-box fc-score-box">
+          <span class="score-label">BEST</span>
+          <span id="best-freecul">-</span>
+        </div>
+      </header>
+      <div id="freecul-board"></div>
+    </div>
+
+    <div id="game-over-freecul" class="hidden">
+      <div class="modal">
+        <h2 id="fc-result-title">You Win!</h2>
+        <p class="final-label">MOVES</p>
+        <p id="final-moves-freecul" class="final-value">0</p>
+        <button id="restart-freecul">Play Again</button>
+        <button id="goto-menu-freecul">Menu</button>
+      </div>
+    </div>
+
+    <script type="module" src="js/menu.js"></script>
     <script>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js');

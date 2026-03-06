@@ -14,18 +14,15 @@ import {
 import { calcPoints, getBest, updateBest } from './scoring.js';
 
 const els = {
-  menu: document.getElementById('menu'),
-  app: document.getElementById('app'),
+  app: document.getElementById('app-sudocul'),
   grid: document.getElementById('grid'),
   tray: document.getElementById('current-piece'),
-  score: document.getElementById('score'),
-  best: document.getElementById('best-score'),
-  overlay: document.getElementById('game-over-overlay'),
-  popup: document.getElementById('score-popup'),
-  restart: document.getElementById('restart-btn'),
-  menuBtn: document.getElementById('menu-btn'),
-  gotoMenu: document.getElementById('goto-menu-btn'),
-  tileSudocul: document.getElementById('tile-sudocul'),
+  score: document.getElementById('score-sudocul'),
+  best: document.getElementById('best-sudocul'),
+  overlay: document.getElementById('game-over-sudocul'),
+  popup: document.getElementById('score-popup-sudocul'),
+  restart: document.getElementById('restart-sudocul'),
+  gotoMenu: document.getElementById('goto-menu-sudocul'),
 };
 
 const state = {
@@ -52,19 +49,6 @@ function applyRandomPalette() {
   root.setProperty('--piece-color', p.color);
   root.setProperty('--piece-glow', p.glow);
   root.setProperty('--piece-light', p.light);
-}
-
-// ── NAVIGATION ───────────────────────────────────────────────────────────────
-function showMenu() {
-  hideGameOver(els.overlay);
-  els.app.classList.add('hidden');
-  els.menu.classList.remove('hidden');
-}
-
-function startGame() {
-  els.menu.classList.add('hidden');
-  els.app.classList.remove('hidden');
-  init();
 }
 
 // ── INIT / RESTART ────────────────────────────────────────────────────────────
@@ -133,14 +117,22 @@ async function onPlace(piece, row, col) {
   state.busy = false;
 }
 
-// ── BOOTSTRAP ─────────────────────────────────────────────────────────────────
-// initInput is called once — it uses event delegation and a getGrid callback,
-// so it stays valid across restarts without re-binding.
-initInput(els.tray, els.grid, () => state.grid, onPlace);
+// ── BOOTSTRAP (runs once on first import) ────────────────────────────────────
+let inputBound = false;
 
-els.restart.addEventListener('click', init);
-els.gotoMenu.addEventListener('click', showMenu);
-els.menuBtn.addEventListener('click', showMenu);
-els.tileSudocul.addEventListener('click', startGame);
+function bindOnce() {
+  if (inputBound) return;
+  inputBound = true;
+  initInput(els.tray, els.grid, () => state.grid, onPlace);
+  els.restart.addEventListener('click', init);
+}
 
-showMenu();
+// ── PUBLIC API ────────────────────────────────────────────────────────────────
+export function start() {
+  bindOnce();
+  init();
+}
+
+export function stop() {
+  hideGameOver(els.overlay);
+}
