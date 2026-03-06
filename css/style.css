@@ -1,0 +1,371 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+:root {
+  --piece-color: #e8441a;
+  --piece-glow: rgba(232, 68, 26, 0.55);
+  --piece-light: #ff6b42;
+  --highlight-valid: rgba(232, 68, 26, 0.38);
+  --highlight-invalid: rgba(220, 30, 30, 0.38);
+  --cell-bg: #1c1c2e;
+  --cell-bg-alt: #232338;
+  --cell-border: #2a2a45;
+  --box-border: #4a4a7a;
+  --bg: #11111d;
+  --surface: #1c1c2e;
+  --text: #e0e0f0;
+  --text-dim: #6a6a9a;
+  --mini: clamp(38px, 10.5vw, 54px);
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
+  touch-action: none;
+}
+
+/* ── APP LAYOUT ─────────────────────────────────────────── */
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  height: 100dvh;
+  padding: 8px;
+  gap: 8px;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+#header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 440px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+}
+
+.score-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.score-box span:last-child {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: var(--piece-color);
+  text-shadow: 0 0 20px var(--piece-glow);
+}
+
+/* ── GRID ───────────────────────────────────────────────── */
+#grid-wrapper {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* Container query context so #grid can reference cqw / cqh */
+  container-type: size;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(9, 1fr);
+  /* Always a perfect square: the smaller of the wrapper's two axes */
+  width: min(100cqw, 100cqh);
+  height: min(100cqw, 100cqh);
+  border: 2px solid var(--box-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--cell-border);
+  gap: 1px;
+}
+
+/* ── CELLS ──────────────────────────────────────────────── */
+.cell {
+  background: var(--cell-bg);
+  position: relative;
+  transition: background 0.12s ease;
+}
+
+.cell[data-box='1'] {
+  background: var(--cell-bg-alt);
+}
+
+/* Thick right border after box columns 2 and 5 */
+.cell[data-col='2'],
+.cell[data-col='5'] {
+  border-right: 2px solid var(--box-border);
+}
+
+/* Thick bottom border after box rows 2 and 5 */
+.cell[data-row='2'],
+.cell[data-row='5'] {
+  border-bottom: 2px solid var(--box-border);
+}
+
+.cell.filled {
+  background: var(--piece-color);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.cell.highlight-valid {
+  background: var(--highlight-valid);
+}
+
+.cell.highlight-invalid {
+  background: var(--highlight-invalid);
+}
+
+/* clear flash: bright pulse then piece commits to fade */
+@keyframes clearFlash {
+  0% {
+    background: var(--piece-color);
+  }
+  35% {
+    background: #ffffff;
+    box-shadow: 0 0 10px #fff;
+  }
+  100% {
+    background: var(--piece-color);
+  }
+}
+
+.cell.clearing {
+  animation: clearFlash 0.42s ease-in-out;
+  z-index: 1;
+}
+
+/* ── TRAY ───────────────────────────────────────────────── */
+#tray {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 0 12px;
+  width: 100%;
+  /* Fixed to the height of the tallest possible piece (2 rows) so the
+     grid never resizes when a 1-row piece (I) swaps for a 2-row piece. */
+  height: calc(var(--mini) * 2 + 52px);
+  min-height: calc(var(--mini) * 2 + 52px);
+}
+
+.tray-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+#current-piece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── PIECE PREVIEW ──────────────────────────────────────── */
+.piece-preview {
+  display: grid;
+  grid-template-columns: repeat(var(--cols), var(--mini));
+  grid-template-rows: repeat(var(--rows), var(--mini));
+  gap: 3px;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 0.1s;
+}
+
+.piece-preview:active {
+  cursor: grabbing;
+}
+
+.piece-preview.dragging {
+  opacity: 0.18;
+}
+
+.mini-cell {
+  width: var(--mini);
+  height: var(--mini);
+  border-radius: 7px;
+  background: transparent;
+}
+
+.mini-cell.filled {
+  background: var(--piece-color);
+  box-shadow: 0 3px 10px var(--piece-glow);
+}
+
+/* ── DRAG GHOST ─────────────────────────────────────────── */
+.piece-ghost {
+  position: fixed;
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.82;
+}
+
+.ghost-cell {
+  border-radius: 3px;
+  background: transparent;
+}
+
+.ghost-cell.filled {
+  background: var(--piece-color);
+  box-shadow: 0 2px 8px var(--piece-glow);
+}
+
+/* ── GAME OVER OVERLAY ──────────────────────────────────── */
+#game-over-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+#game-over-overlay.hidden {
+  display: none;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: 22px;
+  padding: 40px 52px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--box-border);
+}
+
+.modal h2 {
+  font-size: 34px;
+  font-weight: 900;
+  color: var(--piece-color);
+  text-shadow: 0 0 20px var(--piece-glow);
+  margin-bottom: 4px;
+}
+
+.final-label {
+  font-size: 11px;
+  letter-spacing: 3px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.final-value {
+  font-size: 52px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+
+#restart-btn {
+  margin-top: 12px;
+  padding: 15px 44px;
+  background: var(--piece-color);
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 16px var(--piece-glow);
+  transition:
+    transform 0.1s,
+    background 0.15s;
+}
+
+#restart-btn:active {
+  background: var(--piece-light);
+  transform: scale(0.96);
+}
+
+/* ── SCORE POPUP ────────────────────────────────────────── */
+#score-popup {
+  position: fixed;
+  pointer-events: none;
+  z-index: 600;
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--piece-color);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+#score-popup.hidden {
+  display: none;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(-50%, -110%) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -170%) scale(1);
+  }
+}
+
+#score-popup.pop {
+  display: block;
+  animation: floatUp 0.75s ease-out forwards;
+}
