@@ -11,7 +11,8 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>Sudocul</title>
+    <title>SudoTris</title>
+    <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -50,5 +51,10 @@
     <div id="score-popup" class="hidden">+0</div>
 
     <script type="module" src="js/game.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./sw.js');
+      }
+    </script>
   </body>
 </html>

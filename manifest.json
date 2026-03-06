@@ -1,0 +1,18 @@
+{
+  "name": "SudoTris",
+  "short_name": "SudoTris",
+  "description": "Tetris pieces on a Sudoku grid",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#11111d",
+  "theme_color": "#11111d",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
