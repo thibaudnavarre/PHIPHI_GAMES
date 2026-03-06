@@ -1,6 +1,6 @@
 {
-  "name": "SudoTris",
-  "short_name": "SudoTris",
+  "name": "SudoCul",
+  "short_name": "SudoCul",
   "description": "Tetris pieces on a Sudoku grid",
   "start_url": "./",
   "display": "standalone",

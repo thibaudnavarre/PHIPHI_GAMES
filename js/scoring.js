@@ -1,4 +1,4 @@
-const KEY = 'sudotris_best';
+const KEY = 'sudocul_best';
 
 // Score formula: 10 pts × unique cells cleared × number of lines/boxes cleared simultaneously.
 export function calcPoints(combo, cellCount) {

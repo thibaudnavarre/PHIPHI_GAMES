@@ -1,0 +1,20 @@
+{
+  "chat.tools.terminal.autoApprove": {
+    "/^node --check /Users/thibz/Documents/Work/Perso/Projects/PHIPHI_GAMES/js/game\\.js && echo \"game\\.js OK\" && grep -c \"showMenu\\\\\\|startGame\\\\\\|gotoMenu\\\\\\|tile-sudotris\" /Users/thibz/Documents/Work/Perso/Projects/PHIPHI_GAMES/js/game\\.js && grep -c \"menu-btn\\\\\\|goto-menu-btn\\\\\\|game-tile\\\\\\|menu-title\" /Users/thibz/Documents/Work/Perso/Projects/PHIPHI_GAMES/index\\.html && echo \"All checks passed\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^cd /Users/thibz/Documents/Work/Perso/Projects/PHIPHI_GAMES && python3 -c \"\nimport re, sys\n\n# ── game\\.js ────────────────────────────────────────────────\ng = open\\('js/game\\.js'\\)\\.read\\(\\)\n\ng = g\\.replace\\(\n'''const els = \\{\n  grid: document\\.getElementById\\('grid'\\),\n  tray: document\\.getElementById\\('current-piece'\\),\n  score: document\\.getElementById\\('score'\\),\n  best: document\\.getElementById\\('best-score'\\),\n  overlay: document\\.getElementById\\('game-over-overlay'\\),\n  popup: document\\.getElementById\\('score-popup'\\),\n  restart: document\\.getElementById\\('restart-btn'\\),\n\\};''',\n'''const els = \\{\n  menu:         document\\.getElementById\\('menu'\\),\n  app:          document\\.getElementById\\('app'\\),\n  grid:         document\\.getElementById\\('grid'\\),\n  tray:         document\\.getElementById\\('current-piece'\\),\n  score:        document\\.getElementById\\('score'\\),\n  best:         document\\.getElementById\\('best-score'\\),\n  overlay:      document\\.getElementById\\('game-over-overlay'\\),\n  popup:        document\\.getElementById\\('score-popup'\\),\n  restart:      document\\.getElementById\\('restart-btn'\\),\n  menuBtn:      document\\.getElementById\\('menu-btn'\\),\n  gotoMenu:     document\\.getElementById\\('goto-menu-btn'\\),\n  tileSudotris: document\\.getElementById\\('tile-sudotris'\\),\n\\};'''\\)\n\ng = g\\.replace\\(\n'initInput\\(els\\.tray, els\\.grid, \\(\\) => state\\.grid, onPlace\\);\\\\n\\\\nels\\.restart\\.addEventListener\\(\\\\'click\\\\', init\\);\\\\n\\\\ninit\\(\\);',\n'''initInput\\(els\\.tray, els\\.grid, \\(\\) => state\\.grid, onPlace\\);\n\nels\\.restart\\.addEventListener\\('click', init\\);\nels\\.gotoMenu\\.addEventListener\\('click', showMenu\\);\nels\\.menuBtn\\.addEventListener\\('click', showMenu\\);\nels\\.tileSudotris\\.addEventListener\\('click', startGame\\);\n\nshowMenu\\(\\);'''\\)\n\nnav = '''\n// \\\\u2500\\\\u2500 NAVIGATION \\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\\\\u2500\nfunction showMenu\\(\\) \\{\n  hideGameOver\\(els\\.overlay\\);\n  els\\.app\\.classList\\.add\\('hidden'\\);\n  els\\.menu\\.classList\\.remove\\('hidden'\\);\n\\}\n\nfunction startGame\\(\\) \\{\n  els\\.menu\\.classList\\.add\\('hidden'\\);\n  els\\.app\\.classList\\.remove\\('hidden'\\);\n  init\\(\\);\n\\}\n\n'''\n\ng = g\\.replace\\('// \\\\u2500\\\\u2500 INIT / RESTART', nav \\+ '// \\\\u2500\\\\u2500 INIT / RESTART'\\)\nopen\\('js/game\\.js','w'\\)\\.write\\(g\\)\nprint\\('game\\.js ok, showMenu count:', g\\.count\\('showMenu'\\)\\)\n\"\n$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^node --input-type=module < js/game\\.js 2>&1 \\| head -5; echo \"exit: \\$\\?\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    },
+    "/^node --check js/game\\.js && echo \"OK\" \\|\\| echo \"FAIL\"$/": {
+      "approve": true,
+      "matchCommandLine": true
+    }
+  }
+}

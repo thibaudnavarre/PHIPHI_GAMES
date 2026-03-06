@@ -1,4 +1,4 @@
-const CACHE = 'sudotris-v1';
+const CACHE = 'sudocul-v1';
 const ASSETS = [
   './',
   './index.html',

@@ -14,6 +14,8 @@ import {
 import { calcPoints, getBest, updateBest } from './scoring.js';
 
 const els = {
+  menu: document.getElementById('menu'),
+  app: document.getElementById('app'),
   grid: document.getElementById('grid'),
   tray: document.getElementById('current-piece'),
   score: document.getElementById('score'),
@@ -21,6 +23,9 @@ const els = {
   overlay: document.getElementById('game-over-overlay'),
   popup: document.getElementById('score-popup'),
   restart: document.getElementById('restart-btn'),
+  menuBtn: document.getElementById('menu-btn'),
+  gotoMenu: document.getElementById('goto-menu-btn'),
+  tileSudocul: document.getElementById('tile-sudocul'),
 };
 
 const state = {
@@ -47,6 +52,19 @@ function applyRandomPalette() {
   root.setProperty('--piece-color', p.color);
   root.setProperty('--piece-glow', p.glow);
   root.setProperty('--piece-light', p.light);
+}
+
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+function showMenu() {
+  hideGameOver(els.overlay);
+  els.app.classList.add('hidden');
+  els.menu.classList.remove('hidden');
+}
+
+function startGame() {
+  els.menu.classList.add('hidden');
+  els.app.classList.remove('hidden');
+  init();
 }
 
 // ── INIT / RESTART ────────────────────────────────────────────────────────────
@@ -121,5 +139,8 @@ async function onPlace(piece, row, col) {
 initInput(els.tray, els.grid, () => state.grid, onPlace);
 
 els.restart.addEventListener('click', init);
+els.gotoMenu.addEventListener('click', showMenu);
+els.menuBtn.addEventListener('click', showMenu);
+els.tileSudocul.addEventListener('click', startGame);
 
-init();
+showMenu();
