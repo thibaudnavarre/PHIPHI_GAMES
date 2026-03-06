@@ -137,9 +137,9 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   display: grid;
   grid-template-areas:
-    'tl  .'
-    '.   center'
-    '.   br';
+    'tl     .'
+    'center center'
+    '.      br';
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr auto;
   padding: 3px 4px;
@@ -177,7 +177,8 @@
   grid-area: br;
   line-height: 1;
   transform: rotate(180deg);
-  text-align: right;
+  justify-self: end;
+  align-self: end;
 }
 
 /* ── FACE-DOWN CARD BACK ──────────────────────────────────────── */
@@ -226,9 +227,9 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
   display: grid;
   grid-template-areas:
-    'tl  .'
-    '.   center'
-    '.   br';
+    'tl     .'
+    'center center'
+    '.      br';
   grid-template-columns: auto 1fr;
   grid-template-rows: auto 1fr auto;
   padding: 3px 4px;
@@ -256,7 +257,8 @@
   grid-area: br;
   line-height: 1;
   transform: rotate(180deg);
-  text-align: right;
+  justify-self: end;
+  align-self: end;
 }
 
 /* ── GAME OVER ───────────────────────────────────────────── */

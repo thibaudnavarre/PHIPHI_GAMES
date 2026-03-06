@@ -32,7 +32,7 @@ function hideOverlay() {
 }
 
 function showOverlay(won) {
-  els.title.textContent = won ? 'You Win! 🎉' : 'No Moves Left';
+  els.title.textContent = won ? 'You Win! 🎉' : 'Bien joué ! 🃏';
   els.finalMoves.textContent = state.moves;
   if (won) updateBest(state.moves);
   setBest(els.best, getBest());
@@ -52,6 +52,24 @@ function checkGameState() {
   stuckTimer = setTimeout(() => {
     if (!hasAnyMove(state)) showOverlay(false);
   }, 600);
+}
+
+// ── AUTO-MOVE HANDLER (double-tap) ───────────────────────────────────────────
+// Try foundation first, then scan every tableau column.
+function onAutoMove(src) {
+  let next = applyMove(state, src, { type: 'foundation' });
+  if (!next) {
+    for (let col = 0; col < 7; col++) {
+      if (src.type === 'tableau' && src.col === col) continue;
+      next = applyMove(state, src, { type: 'tableau', col });
+      if (next) break;
+    }
+  }
+  if (!next) return;
+  state = next;
+  renderState(els.board, state);
+  setMoves(els.moves, state.moves);
+  checkGameState();
 }
 
 // ── DRAW HANDLER ──────────────────────────────────────────────────────────────
@@ -81,7 +99,7 @@ function bindOnce() {
   if (inputBound) return;
   inputBound = true;
   buildBoard(els.board);
-  initInput(els.board, () => state, { onDraw, onMove });
+  initInput(els.board, () => state, { onDraw, onMove, onAutoMove });
   els.restart.addEventListener('click', init);
 }
 

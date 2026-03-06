@@ -71,13 +71,18 @@ function getEndPoint(e) {
 }
 
 // ── MAIN ──────────────────────────────────────────────────────────────────────
-export function initInput(board, getState, { onDraw, onMove }) {
+export function initInput(board, getState, { onDraw, onMove, onAutoMove }) {
   let startPt = null;
   let dragging = false;
   let startEl = null; // the card element the touch/mouse started on
+  let tapSrc = null; // src resolved eagerly for tap/double-tap
   let dragSrc = null;
   let dragCards = []; // card objects being dragged
   let dimmedEls = []; // elements whose opacity has been lowered
+
+  // ── DOUBLE-TAP STATE ───────────────────────────────────────────────────────
+  let lastTapEl = null;
+  let lastTapTime = 0;
 
   // ── STOCK TAP ──────────────────────────────────────────────────────────────
   // Use touchend for instant response on iOS; fall back to click for desktop.
@@ -110,6 +115,20 @@ export function initInput(board, getState, { onDraw, onMove }) {
     dragSrc = null;
     dragCards = [];
     dimmedEls = [];
+
+    // Resolve tap source eagerly (needed for double-tap without a drag)
+    tapSrc = null;
+    const wasteEl_ = cardEl.closest('#fc-waste');
+    const colEl_ = cardEl.closest('.fc-column');
+    if (wasteEl_) {
+      tapSrc = { type: 'waste' };
+    } else if (colEl_) {
+      tapSrc = {
+        type: 'tableau',
+        col: +colEl_.dataset.col,
+        index: +cardEl.dataset.index,
+      };
+    }
   }
 
   // ── DRAG MOVE ──────────────────────────────────────────────────────────────
@@ -169,6 +188,8 @@ export function initInput(board, getState, { onDraw, onMove }) {
     if (!startEl) return;
 
     const pt = getEndPoint(e);
+    const el = startEl; // capture before reset
+    const src = tapSrc;
 
     if (dragging && dragSrc) {
       removeGhost();
@@ -184,10 +205,22 @@ export function initInput(board, getState, { onDraw, onMove }) {
         }
         if (dst) onMove(dragSrc, dst);
       }
+    } else if (src) {
+      // Tap (no drag) — detect double-tap
+      const now = Date.now();
+      if (lastTapEl === el && now - lastTapTime < 350) {
+        onAutoMove(src);
+        lastTapEl = null;
+        lastTapTime = 0;
+      } else {
+        lastTapEl = el;
+        lastTapTime = now;
+      }
     }
 
     startEl = null;
     startPt = null;
+    tapSrc = null;
     dragging = false;
     dragSrc = null;
     dragCards = [];
