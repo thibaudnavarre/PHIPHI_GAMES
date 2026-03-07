@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/sudocul.css" />
     <link rel="stylesheet" href="css/freecul.css" />
+    <link rel="stylesheet" href="css/lightcul.css" />
   </head>
   <body>
     <!-- ── MENU ─────────────────────────────────────────────────── -->
@@ -70,25 +71,50 @@
           </svg>
           <span class="tile-name">FreeCul</span>
         </button>
-        <div class="game-tile coming-soon">
+        <button class="game-tile" id="tile-lightcul">
           <svg
             class="tile-icon"
             viewBox="0 0 80 80"
             xmlns="http://www.w3.org/2000/svg"
           >
             <rect width="80" height="80" rx="12" fill="#1c1c2e" />
-            <text
-              x="40"
-              y="48"
-              text-anchor="middle"
-              font-size="28"
-              fill="#2a2a45"
-            >
-              ?
-            </text>
+            <path
+              d="M0,40 H46 V20 H72"
+              stroke="rgba(255,214,0,0.25)"
+              stroke-width="9"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M0,40 H46 V20 H72"
+              stroke="#FFD600"
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <line
+              x1="38"
+              y1="48"
+              x2="54"
+              y2="32"
+              stroke="#FFD600"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <line
+              x1="38"
+              y1="28"
+              x2="54"
+              y2="12"
+              stroke="#FFD600"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
           </svg>
-          <span class="tile-name">Coming Soon</span>
-        </div>
+          <span class="tile-name">LightCul</span>
+        </button>
         <div class="game-tile coming-soon">
           <svg
             class="tile-icon"
@@ -177,6 +203,43 @@
         <button id="goto-menu-freecul">Menu</button>
       </div>
     </div>
+
+    <!-- ── LIGHTCUL ────────────────────────────────────────── -->
+    <div id="app-lightcul" class="hidden">
+      <button id="menu-btn-lightcul" aria-label="Back to menu">&#8592;</button>
+      <header id="header-lightcul">
+        <div class="score-box">
+          <span class="score-label">SCORE</span>
+          <span id="score-lightcul">0</span>
+        </div>
+        <h1 class="lc-title">LightCul</h1>
+        <div class="score-box">
+          <span class="score-label">TURNS</span>
+          <span id="turns-lightcul">49</span>
+        </div>
+      </header>
+
+      <div id="grid-wrapper-lightcul">
+        <div id="grid-lightcul"></div>
+      </div>
+
+      <div id="tray-lightcul">
+        <p class="lc-tray-label">Next Mirror</p>
+        <div id="current-tile-lightcul"></div>
+      </div>
+    </div>
+
+    <div id="game-over-lightcul" class="hidden">
+      <div class="modal">
+        <h2>Game Over</h2>
+        <p class="final-label">SCORE</p>
+        <p class="final-value">0</p>
+        <button id="restart-lightcul">Play Again</button>
+        <button id="goto-menu-lightcul">Menu</button>
+      </div>
+    </div>
+
+    <div id="score-popup-lightcul" class="hidden">+0</div>
 
     <script type="module" src="js/menu.js"></script>
     <script>

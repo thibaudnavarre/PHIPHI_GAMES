@@ -145,7 +145,8 @@ body {
 }
 
 #menu-btn-sudocul,
-#menu-btn-freecul {
+#menu-btn-freecul,
+#menu-btn-lightcul {
   position: absolute;
   top: max(14px, env(safe-area-inset-top));
   left: 14px;
@@ -167,13 +168,15 @@ body {
 }
 
 #menu-btn-sudocul:active,
-#menu-btn-freecul:active {
+#menu-btn-freecul:active,
+#menu-btn-lightcul:active {
   color: var(--text);
   border-color: var(--text-dim);
 }
 
 /* ── GAME SCREENS ───────────────────────────────────────── */
 #app-sudocul.hidden,
-#app-freecul.hidden {
+#app-freecul.hidden,
+#app-lightcul.hidden {
   display: none;
 }
