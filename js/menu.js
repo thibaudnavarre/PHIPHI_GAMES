@@ -3,18 +3,22 @@ import {
   start as startLightcul,
   stop as stopLightcul,
 } from './lightcul/game.js';
+import { start as startMergcul, stop as stopMergcul } from './mergcul/game.js';
 import { start as startSudocul, stop as stopSudocul } from './sudocul/game.js';
 
 const menu = document.getElementById('menu');
 const appSudocul = document.getElementById('app-sudocul');
 const appFreecul = document.getElementById('app-freecul');
 const appLightcul = document.getElementById('app-lightcul');
+const appMergcul = document.getElementById('app-mergcul');
 const menuBtnSudocul = document.getElementById('menu-btn-sudocul');
 const menuBtnFreecul = document.getElementById('menu-btn-freecul');
 const menuBtnLightcul = document.getElementById('menu-btn-lightcul');
+const menuBtnMergcul = document.getElementById('menu-btn-mergcul');
 const gotoMenuSudocul = document.getElementById('goto-menu-sudocul');
 const gotoMenuFreecul = document.getElementById('goto-menu-freecul');
 const gotoMenuLightcul = document.getElementById('goto-menu-lightcul');
+const gotoMenuMergcul = document.getElementById('goto-menu-mergcul');
 const updateBtn = document.getElementById('update-btn');
 
 // ── SERVICE WORKER & UPDATE ───────────────────────────────────────────────────
@@ -56,9 +60,11 @@ function showMenu() {
   stopSudocul();
   stopFreecul();
   stopLightcul();
+  stopMergcul();
   appSudocul.classList.add('hidden');
   appFreecul.classList.add('hidden');
   appLightcul.classList.add('hidden');
+  appMergcul.classList.add('hidden');
   menu.classList.remove('hidden');
 }
 
@@ -80,6 +86,12 @@ function launchLightcul() {
   startLightcul();
 }
 
+function launchMergcul() {
+  menu.classList.add('hidden');
+  appMergcul.classList.remove('hidden');
+  startMergcul();
+}
+
 // ── EVENT LISTENERS ───────────────────────────────────────────────────────────
 document
   .getElementById('tile-sudocul')
@@ -90,12 +102,17 @@ document
 document
   .getElementById('tile-lightcul')
   .addEventListener('click', launchLightcul);
+document
+  .getElementById('tile-mergcul')
+  .addEventListener('click', launchMergcul);
 menuBtnSudocul.addEventListener('click', showMenu);
 menuBtnFreecul.addEventListener('click', showMenu);
 menuBtnLightcul.addEventListener('click', showMenu);
+menuBtnMergcul.addEventListener('click', showMenu);
 gotoMenuSudocul.addEventListener('click', showMenu);
 gotoMenuFreecul.addEventListener('click', showMenu);
 gotoMenuLightcul.addEventListener('click', showMenu);
+gotoMenuMergcul.addEventListener('click', showMenu);
 
 // ── BOOT ──────────────────────────────────────────────────────────────────────
 showMenu();

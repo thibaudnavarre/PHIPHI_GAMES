@@ -1,4 +1,4 @@
-const CACHE = 'phiphi-v2';
+const CACHE = 'phiphi-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -19,12 +19,18 @@ const ASSETS = [
   './js/freecul/input.js',
   './js/freecul/scoring.js',
   './css/lightcul.css',
+  './css/mergcul.css',
   './js/lightcul/game.js',
   './js/lightcul/grid.js',
   './js/lightcul/tiles.js',
   './js/lightcul/input.js',
   './js/lightcul/renderer.js',
   './js/lightcul/scoring.js',
+  './js/mergcul/game.js',
+  './js/mergcul/input.js',
+  './js/mergcul/logic.js',
+  './js/mergcul/renderer.js',
+  './js/mergcul/scoring.js',
   './manifest.json',
   './icon.svg',
 ];

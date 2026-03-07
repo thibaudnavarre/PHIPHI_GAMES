@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="css/sudocul.css" />
     <link rel="stylesheet" href="css/freecul.css" />
     <link rel="stylesheet" href="css/lightcul.css" />
+    <link rel="stylesheet" href="css/mergcul.css" />
   </head>
   <body>
     <!-- ── MENU ─────────────────────────────────────────────────── -->
@@ -115,25 +116,57 @@
           </svg>
           <span class="tile-name">LightCul</span>
         </button>
-        <div class="game-tile coming-soon">
+        <button class="game-tile" id="tile-mergcul">
           <svg
             class="tile-icon"
             viewBox="0 0 80 80"
             xmlns="http://www.w3.org/2000/svg"
           >
             <rect width="80" height="80" rx="12" fill="#1c1c2e" />
+            <rect x="8" y="27" width="22" height="22" rx="4" fill="#3B9EFF" />
             <text
-              x="40"
-              y="48"
+              x="19"
+              y="43"
               text-anchor="middle"
-              font-size="28"
-              fill="#2a2a45"
+              font-size="13"
+              font-weight="bold"
+              fill="#fff"
             >
-              ?
+              2
             </text>
+            <rect x="35" y="15" width="22" height="22" rx="4" fill="#28D97C" />
+            <text
+              x="46"
+              y="31"
+              text-anchor="middle"
+              font-size="13"
+              font-weight="bold"
+              fill="#fff"
+            >
+              3
+            </text>
+            <rect x="50" y="38" width="22" height="22" rx="4" fill="#FF8C00" />
+            <text
+              x="61"
+              y="54"
+              text-anchor="middle"
+              font-size="13"
+              font-weight="bold"
+              fill="#fff"
+            >
+              4
+            </text>
+            <path
+              d="M30,38 Q37,30 35,26"
+              stroke="#ffffff44"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+              marker-end="url(#arr)"
+            />
           </svg>
-          <span class="tile-name">Coming Soon</span>
-        </div>
+          <span class="tile-name">MergCul</span>
+        </button>
       </div>
       <button id="update-btn" class="hidden" aria-label="Update available">
         &#x2B06; Update available
@@ -240,6 +273,38 @@
     </div>
 
     <div id="score-popup-lightcul" class="hidden">+0</div>
+
+    <!-- ── MERGCUL ─────────────────────────────────────────────── -->
+    <div id="app-mergcul" class="hidden">
+      <button id="menu-btn-mergcul" aria-label="Back to menu">&#8592;</button>
+      <header id="header-mergcul">
+        <div class="score-box">
+          <span class="score-label">SCORE</span>
+          <span id="score-mergcul">0</span>
+        </div>
+        <h1 class="mc-title">MergCul</h1>
+        <div class="score-box">
+          <span class="score-label">BEST</span>
+          <span id="best-mergcul">0</span>
+        </div>
+      </header>
+
+      <div id="grid-wrapper-mergcul">
+        <div id="grid-mergcul"></div>
+      </div>
+    </div>
+
+    <div id="game-over-mergcul" class="hidden">
+      <div class="modal">
+        <h2>Game Over</h2>
+        <p class="final-label">SCORE</p>
+        <p class="final-value">0</p>
+        <button id="restart-mergcul">Play Again</button>
+        <button id="goto-menu-mergcul">Menu</button>
+      </div>
+    </div>
+
+    <div id="score-popup-mergcul" class="hidden">+0</div>
 
     <script type="module" src="js/menu.js"></script>
     <script>

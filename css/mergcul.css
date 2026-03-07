@@ -1,0 +1,194 @@
+/* ── APP LAYOUT ─────────────────────────────────────────── */
+#app-mergcul {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100dvh;
+  padding: 8px;
+  padding-top: max(8px, env(safe-area-inset-top));
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  gap: 8px;
+}
+
+/* ── HEADER ─────────────────────────────────────────────── */
+#header-mergcul {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 440px;
+  padding: 8px 16px;
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+.mc-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #3b9eff;
+  text-shadow: 0 0 20px rgba(59, 158, 255, 0.55);
+}
+
+/* ── GRID WRAPPER ───────────────────────────────────────── */
+#grid-wrapper-mergcul {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  container-type: size;
+}
+
+#grid-mergcul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  width: min(100cqw, 100cqh);
+  height: min(100cqw, 100cqh);
+  border: 2px solid var(--box-border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--cell-border);
+  gap: 3px;
+  touch-action: none;
+}
+
+/* ── CELLS ──────────────────────────────────────────────── */
+#grid-mergcul .mc-cell {
+  background: var(--cell-bg);
+  position: relative;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 4.5cqw, 32px);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.92);
+  transition: background 0.1s ease;
+  cursor: default;
+}
+
+#grid-mergcul .mc-cell.occupied {
+  background: var(--tile-color, var(--cell-bg-alt));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ── MERGE ANIMATIONS ───────────────────────────────────── */
+@keyframes mc-merge-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.5;
+  }
+  55% {
+    transform: scale(1.2);
+  }
+  80% {
+    transform: scale(0.92);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+#grid-mergcul .mc-cell.mc-merge-in {
+  animation: mc-merge-in 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 3;
+}
+
+/* ── GAME OVER OVERLAY ──────────────────────────────────── */
+#game-over-mergcul {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.78);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 500;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+#game-over-mergcul.hidden {
+  display: none;
+}
+
+#game-over-mergcul .modal h2 {
+  color: #3b9eff;
+  text-shadow: 0 0 20px rgba(59, 158, 255, 0.55);
+}
+
+#restart-mergcul {
+  margin-top: 12px;
+  padding: 15px 44px;
+  width: 200px;
+  background: #3b9eff;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(59, 158, 255, 0.55);
+  transition:
+    transform 0.1s,
+    background 0.15s;
+}
+
+#restart-mergcul:active {
+  background: #70baff;
+  transform: scale(0.96);
+}
+
+#goto-menu-mergcul {
+  padding: 12px 44px;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--box-border);
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 200px;
+  font-family: inherit;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+#goto-menu-mergcul:active {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+/* ── SCORE POPUP ────────────────────────────────────────── */
+#score-popup-mergcul {
+  position: fixed;
+  pointer-events: none;
+  z-index: 600;
+  font-size: 30px;
+  font-weight: 900;
+  color: #3b9eff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+}
+
+#score-popup-mergcul.hidden {
+  display: none;
+}
+
+#score-popup-mergcul.pop {
+  display: block;
+  animation: floatUp 0.75s ease-out forwards;
+}
