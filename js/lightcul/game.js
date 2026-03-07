@@ -19,7 +19,7 @@ import {
   showGameOver,
   showPopup,
 } from './renderer.js';
-import { calcClearBonus, calcPoints, updateBest } from './scoring.js';
+import { calcClearBonus, calcPoints, getBest, updateBest } from './scoring.js';
 import { getRandomTile } from './tiles.js';
 
 const els = {
@@ -27,7 +27,7 @@ const els = {
   grid: document.getElementById('grid-lightcul'),
   tray: document.getElementById('current-tile-lightcul'),
   score: document.getElementById('score-lightcul'),
-  turns: document.getElementById('turns-lightcul'),
+  best: document.getElementById('best-lightcul'),
   overlay: document.getElementById('game-over-lightcul'),
   popup: document.getElementById('score-popup-lightcul'),
   restart: document.getElementById('restart-lightcul'),
@@ -38,11 +38,8 @@ const state = {
   grid: null,
   score: 0,
   tile: null,
-  turns: 0,
   busy: false,
 };
-
-const MAX_TURNS = 49;
 
 // ── PALETTES ──────────────────────────────────────────────────────────────────
 const PALETTES = [
@@ -112,7 +109,6 @@ function init() {
   applyRandomPalette();
   state.grid = createGrid();
   state.score = 0;
-  state.turns = 0;
   state.tile = getRandomTile();
   state.busy = false;
 
@@ -125,7 +121,7 @@ function init() {
 
   renderNextTile(els.tray, state.tile);
   setScore(els.score, 0);
-  setScore(els.turns, MAX_TURNS);
+  setScore(els.best, getBest());
   hideGameOver(els.overlay);
 }
 
@@ -144,9 +140,6 @@ async function onPlace(r, c) {
   renderBeam(els.grid, path);
 
   // 3. Determine scoring.
-  state.turns++;
-  setScore(els.turns, MAX_TURNS - state.turns);
-
   const uniquePathLen = new Set(path.map(([pr, pc]) => `${pr},${pc}`)).size;
   const { clearedCells, linesCleared } = checkClearLines(state.grid, path);
   const pts = calcPoints(uniquePathLen, bounces) + calcClearBonus(linesCleared);
@@ -166,6 +159,7 @@ async function onPlace(r, c) {
   state.score += pts;
   updateBest(state.score);
   setScore(els.score, state.score);
+  setScore(els.best, getBest());
 
   // Show floating score popup.
   const rect = els.grid.getBoundingClientRect();
@@ -176,8 +170,8 @@ async function onPlace(r, c) {
     rect.top + rect.height / 2,
   );
 
-  // 6. Check game over: all turns used OR grid completely full.
-  if (state.turns >= MAX_TURNS || isFull(state.grid)) {
+  // 6. Check game over: grid completely full.
+  if (isFull(state.grid)) {
     updateBest(state.score);
     showGameOver(els.overlay, state.score);
     // Keep busy = true; overlay blocks further interaction until restart.
