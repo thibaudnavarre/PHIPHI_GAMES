@@ -4,7 +4,30 @@ export function createGrid() {
   return Array.from({ length: SIZE }, () => new Array(SIZE).fill(null));
 }
 
-// Place a random tile (1 with 90%, 2 with 10%) in a random empty cell.
+// Returns the highest tile value currently on the grid (minimum 2).
+function boardMax(grid) {
+  let max = 2;
+  for (const row of grid)
+    for (const v of row) if (v !== null && v > max) max = v;
+  return max;
+}
+
+// Largest power-of-2 that is ≤ n.
+function floorPow2(n) {
+  if (n < 1) return 1;
+  return Math.pow(2, Math.floor(Math.log2(n)));
+}
+
+// Spawn value: 70% → 1, 20% → 2, 10% → floorPow2(max/8) (min 1).
+// As the board max grows the rare tier scales up, making the game progressively harder.
+function spawnValue(grid) {
+  const r = Math.random();
+  if (r < 0.7) return 1;
+  if (r < 0.9) return 2;
+  return Math.max(1, floorPow2(boardMax(grid) / 8));
+}
+
+// Place a new tile in a random empty cell.
 export function addRandomTile(grid) {
   const empty = [];
   for (let r = 0; r < SIZE; r++)
@@ -12,7 +35,7 @@ export function addRandomTile(grid) {
   if (empty.length === 0) return grid;
   const [r, c] = empty[Math.floor(Math.random() * empty.length)];
   const next = grid.map((row) => [...row]);
-  next[r][c] = Math.random() < 0.9 ? 1 : 2;
+  next[r][c] = spawnValue(grid);
   return next;
 }
 
